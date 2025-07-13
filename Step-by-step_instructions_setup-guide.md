@@ -1,103 +1,107 @@
-🧩 Part 1: Setting Up My Azure Subscription
+# 🛡️ Cybersecurity Honeypot Project on Azure
 
-I started by creating a  Microsoft Azure subscription
+This project demonstrates how I built a cloud-based honeypot, simulated brute force attacks, and monitored them using Microsoft Sentinel.
 
-Once my subscription was set up, I logged into the portal via portal.azure.com.
+---
 
-🛠️ Part 2: Creating the Honeypot (Virtual Machine)
+## 🧩 Part 1: Setting Up My Azure Subscription
 
-Launched a Windows 10 Virtual Machine within Azure.
+- Created a **Microsoft Azure** subscription.
+- Logged into the Azure portal: [https://portal.azure.com](https://portal.azure.com)
 
-Selected a lightweight size (keeping billing in mind).
+---
 
-Important: I remembered the username and password as these would be used to simulate failed logins.
+## 🛠️ Part 2: Creating the Honeypot (Virtual Machine)
 
-Went to Network Security Group and:
+- Launched a **Windows 10 Virtual Machine** in Azure.
+- Selected a **lightweight VM size** to optimize for cost.
+- **Saved** the VM’s **username and password** for future login attempts.
 
-Created an Inbound Rule allowing all incoming traffic (purposefully exposing the machine).
+### 🔒 Network Security Group Configuration:
 
-Then:
+- Created an **Inbound Rule**:
+  - **Allowed all incoming traffic** (intentionally exposing the VM to threats).
 
-Logged into the VM
+### 🔧 Inside the VM:
 
-Disabled the Windows Defender Firewall:
+- **Logged in to the VM**
+- **Disabled Windows Defender Firewall**:
+  - `Start` → `Run` → `wf.msc`
+  - Disabled all profiles: **Domain**, **Private**, and **Public**
 
-Start → Run wf.msc → Properties → Disabled all profiles (Domain, Private, Public)
+---
 
-🔍 Part 3: Simulating Attacks & Inspecting Logs
+## 🔍 Part 3: Simulating Attacks & Inspecting Logs
 
-Attempted 3 failed logins as a fake user (e.g., employee).
+- Simulated **3 failed login attempts** as a fake user (e.g., `employee`)
+- Successfully logged in afterward
+- Opened **Event Viewer** → `Windows Logs` → `Security`
+- Found **Event ID 4625** indicating failed login attempts
 
-Successfully logged into the VM.
+✅ Confirmed that real-time audit logging was functional.
 
-Opened Event Viewer → Windows Logs → Security.
+---
 
-Found Event ID 4625 for failed login attempts.
+## 📊 Part 4: Forwarding Logs to Sentinel + Using KQL
 
-This showed real-time audit logging was functional.
+1. **Created a Log Analytics Workspace (LAW)**
+2. **Provisioned Microsoft Sentinel** connected to that LAW
+3. **Enabled Windows Security Events** using the AMA connector
+4. **Created a Data Collection Rule (DCR)** to collect Windows logs
 
-📊 Part 4: Forwarding Logs to Sentinel + Using KQL
+### 🔎 Verified with KQL:
 
-Created a Log Analytics Workspace (LAW)
+```kql
 
-Provisioned a Microsoft Sentinel SIEM instance connected to that LAW.
 
-Enabled the Windows Security Events via AMA connector
+## 🌍 Part 5: Log Enrichment with GeoIP Data
 
-Created a Data Collection Rule (DCR) for Windows logs
+### 🔎 Problem:
+Security logs only showed **IP addresses**, but lacked **geolocation data**.
 
-Verified logs in Log Analytics using this simple KQL query:
+### ✅ Solution:
+- Downloaded a **GeoIP summarized CSV**
+- In **Microsoft Sentinel → Watchlist**, created:
 
-SecurityEvent
-| where EventId == 4625
+  | Field         | Value         |
+  |---------------|---------------|
+  | Name          | `geoip`       |
+  | Source Type   | Local File    |
+  | Search Key    | `network`     |
+  | Rows Loaded   | ~55,000       |
 
-🎯 Learned: KQL is very similar to SQL. For SOC jobs, knowing KQL/SQL/SPL is essential.
+### 🧠 Used KQL to Join Security Logs with GeoIP:
 
-🌍 Part 5: Log Enrichment with GeoIP Data
-
-Realized the logs only showed IP Addresses, no location data
-
-To enrich:
-
-Downloaded the GeoIP summarized CSV
-
-In Microsoft Sentinel → Watchlist, created:
-
-Name: geoip
-
-Source Type: Local File
-
-Search Key: network
-
-Rows Loaded: ~55,000
-
-Used KQL to join Security Logs with GeoIP data:
-
+```kql
 let GeoIPDB_FULL = _GetWatchlist("geoip");
 let WindowsEvents = SecurityEvent
-    | where IpAddress == "<attacker IP>"
-    | where EventID == 4625
-    | order by TimeGenerated desc
-    | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
+| where IpAddress == ""
+| where EventID == 4625
+| order by TimeGenerated desc
+| evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
 WindowsEvents
 
+
 🌐 Part 6: Creating an Interactive Global Attack Map
+Opened Microsoft Sentinel → Workbooks
 
-In Sentinel Workbooks, created a new workbook
+Created a new workbook
 
-Deleted pre-populated elements → Added new Query Element
+Deleted all default visuals
 
-Opened Advanced Editor → Pasted JSON code from map.json
+Added a new Query Element
 
-Observed the global attack locations on the map, based on enriched IP data
+Opened the Advanced Editor
+
+Pasted JSON code from map.json
+
+Visualized global attack sources using enriched IP geolocation data
 
 🔁 Next Steps & Learning Goals
+🛡️ Monitor bot attacks and brute force login attempts
 
-Monitor bot attempts and develop custom detection rules
+🔔 Set up alerts and automated playbooks using SOAR
 
-Set up alerts and automations (SOAR)
+📈 Explore anomaly detection features in Sentinel
 
-Explore Sentinel’s anomaly detection
-
-Simulate malware or lateral movement in a safe range
-
+🧪 Simulate malware/lateral movement in a controlled test lab
