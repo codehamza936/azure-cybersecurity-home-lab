@@ -1,3 +1,4 @@
+
 # 🛡️ Cybersecurity Honeypot Project on Azure
 
 This project demonstrates how I built a cloud-based honeypot, simulated brute force attacks, and monitored them using Microsoft Sentinel.
@@ -52,7 +53,13 @@ This project demonstrates how I built a cloud-based honeypot, simulated brute fo
 ### 🔎 Verified with KQL:
 
 ```kql
+SecurityEvent
+| where EventId == 4625
+```
 
+> 💡 **KQL** (Kusto Query Language) is similar to SQL. Essential for SOC analysts!
+
+---
 
 ## 🌍 Part 5: Log Enrichment with GeoIP Data
 
@@ -80,28 +87,29 @@ let WindowsEvents = SecurityEvent
 | order by TimeGenerated desc
 | evaluate ipv4_lookup(GeoIPDB_FULL, IpAddress, network);
 WindowsEvents
+```
 
+---
 
-🌐 Part 6: Creating an Interactive Global Attack Map
-Opened Microsoft Sentinel → Workbooks
+## 🌐 Part 6: Creating an Interactive Global Attack Map
 
-Created a new workbook
+1. Opened **Microsoft Sentinel → Workbooks**
+2. Created a **new workbook**
+3. Deleted all **default visuals**
+4. Added a new **Query Element**
+5. Opened the **Advanced Editor**
+6. Pasted JSON code from `map.json`
+7. Visualized **global attack sources** using enriched IP geolocation data
 
-Deleted all default visuals
+---
 
-Added a new Query Element
+## 🔁 Next Steps & Learning Goals
 
-Opened the Advanced Editor
+- 🛡️ **Monitor** bot attacks and brute force login attempts
+- 🔔 **Set up alerts** and automated playbooks using SOAR
+- 📈 **Explore anomaly detection** features in Sentinel
+- 🧪 **Simulate malware/lateral movement** in a controlled test lab
 
-Pasted JSON code from map.json
+---
 
-Visualized global attack sources using enriched IP geolocation data
-
-🔁 Next Steps & Learning Goals
-🛡️ Monitor bot attacks and brute force login attempts
-
-🔔 Set up alerts and automated playbooks using SOAR
-
-📈 Explore anomaly detection features in Sentinel
-
-🧪 Simulate malware/lateral movement in a controlled test lab
+> 🚀 **Goal**: Build real-world SOC (Security Operations Center) skills using **Microsoft Sentinel**, **KQL**, and cloud-native threat detection tools.
