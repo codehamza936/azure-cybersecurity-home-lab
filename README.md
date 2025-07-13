@@ -30,5 +30,5 @@ A beginner-friendly, cloud-based cybersecurity home lab simulating real attacks,
 ---
 
 💼 Built this lab to learn Blue Team tools and land a cybersecurity role.  
-🔗 Let’s connect on [LinkedIn](www.linkedin.com/in/hamzakhalid129) if you're hiring or mentoring!
+🔗 Let’s connect on [www.linkedin.com/in/hamzakhalid129 ](www.linkedin.com/in/hamzakhalid129) if you're hiring or mentoring!
 
