@@ -22,7 +22,7 @@ A beginner-friendly, cloud-based cybersecurity home lab simulating real attacks,
 
 ## 📁 Project Files
 
-- `setup-guide.md` – Full setup instructions
+- `Step-by-step_instructions_setup-guide.md` – Full setup instructions
 - `KQL-rules/*.kql` – Custom queries used
 - `queries-explained.md` – Rule explanations
 - `screenshots/` – Visual proof of implementation
