@@ -25,6 +25,8 @@ This project demonstrates how I built a cloud-based honeypot, simulated brute fo
 
 - Created an **Inbound Rule**:
   - **Allowed all incoming traffic** (intentionally exposing the VM to threats).
+ 
+  <img src="https://github.com/codehamza936/azure-cybersecurity-home-lab/blob/main/Screenshots/Changing_Inbound_rules.png?raw=true"/>
 
 ### 🔧 Inside the VM:
 
@@ -32,6 +34,8 @@ This project demonstrates how I built a cloud-based honeypot, simulated brute fo
 - **Disabled Windows Defender Firewall**:
   - `Start` → `Run` → `wf.msc`
   - Disabled all profiles: **Domain**, **Private**, and **Public**
+
+<img src="https://i.imgur.com/D4uFicX.png" height="100%" width="100%" alt="FIREWALL-OFF"/>
 
 ---
 
@@ -44,6 +48,7 @@ This project demonstrates how I built a cloud-based honeypot, simulated brute fo
 
 ✅ Confirmed that real-time audit logging was functional.
 
+<img src="https://github.com/codehamza936/azure-cybersecurity-home-lab/blob/main/Screenshots/Logs%20(%20Got%20Attacked%20all%20over%20the%20world%20in%20mintues%20).png?raw=true"/>
 ---
 
 ## 📊 Part 4: Forwarding Logs to Sentinel + Using KQL
@@ -80,6 +85,7 @@ Security logs only showed **IP addresses**, but lacked **geolocation data**.
   | Search Key    | `network`     |
   | Rows Loaded   | ~55,000       |
 
+<img src="https://github.com/codehamza936/azure-cybersecurity-home-lab/blob/main/Screenshots/Watchlist_Overview.png?raw=true">
 ### 🧠 Used KQL to Join Security Logs with GeoIP:
 
 ```kql
@@ -92,6 +98,7 @@ let WindowsEvents = SecurityEvent
 WindowsEvents
 ```
 
+<img src="https://github.com/codehamza936/azure-cybersecurity-home-lab/blob/main/Screenshots/KQL_Query_Results.png?raw=true">
 ---
 
 ## 🌐 Part 6: Creating an Interactive Global Attack Map
@@ -103,6 +110,8 @@ WindowsEvents
 5. Opened the **Advanced Editor**
 6. Pasted JSON code from `map.json`
 7. Visualized **global attack sources** using enriched IP geolocation data
+
+<img src="https://github.com/codehamza936/azure-cybersecurity-home-lab/blob/main/Screenshots/VM_Attack_Map_final.png?raw=true">
 
 ---
 
