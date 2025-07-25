@@ -14,9 +14,12 @@ This project demonstrates how I built a cloud-based honeypot, simulated brute fo
 
 ## 🛠️ Part 2: Creating the Honeypot (Virtual Machine)
 
+- Create a VM in Microsoft Azure
 - Launched a **Windows 10 Virtual Machine** in Azure.
 - Selected a **lightweight VM size** to optimize for cost.
 - **Saved** the VM’s **username and password** for future login attempts.
+
+<img src="https://github.com/codehamza936/azure-cybersecurity-home-lab/blob/main/Screenshots/Set%20up%20a%20Vulnerable%20VM%20in%20Azure.png?raw=true"/>
 
 ### 🔒 Network Security Group Configuration:
 
